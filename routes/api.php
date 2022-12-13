@@ -39,6 +39,8 @@ Route::delete('expenses/{id}', 'App\Http\Controllers\ExpenseController@delete');
 
 Route::get('expenses/{y}/{m}', 'App\Http\Controllers\ExpenseController@ExpenseByMonth');
 
+Route::get('resumo/{y}/{m}', 'App\Http\Controllers\ResumoController@index');
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

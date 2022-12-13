@@ -14,7 +14,7 @@ class Expense extends Model
     ];
 
     protected $visible = [
-        'amount', 'description', 'created_at', 'type', 'date'
+        'id', 'amount', 'description', 'created_at', 'type', 'date'
     ];
 
 }

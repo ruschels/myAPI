@@ -14,7 +14,7 @@ class Income extends Model
     ];
 
     protected $visible = [
-        'amount', 'description', 'created_at', 'date'
+       'id', 'amount', 'description', 'created_at', 'date'
     ];
 
 }
