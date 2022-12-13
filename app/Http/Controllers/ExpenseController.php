@@ -2,46 +2,38 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
-use App\Models\Income;
+use App\Models\Expense;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
-class IncomeController extends Controller
+class ExpenseController extends Controller
 {
-    
     public function index(Request $request)
     {
         
         if ($request->description != Null) {
-            //quando recebo um description=x no parametro, fazemos a busca especifica
             
             $term = $request->description;
-            //$filterData = DB::table('incomes')->where('description','LIKE','%'.$term.'%')
-            //    ->get();
             
            return $this->filterData($term, 'description');
         }
         
-        $receitas = Income::all();
-
-       // $receitas['created_at'] = $receitas['created_at']->format('DD-MM-YYYY');
+        $despesas = Expense::all();
         
-        return $receitas;
-    
-}
+        return $despesas;
+    }
 
-protected function filterData($term, $table)
+    protected function filterData($term, $table)
 {
-    $filterData = DB::table('incomes')->where("$table",'LIKE','%'.$term.'%')
+    $filterData = DB::table('expenses')->where("$table",'LIKE','%'.$term.'%')
                 ->get();
             
         return $filterData;
 }
 
-public function incomeByMonth($y, $m)
+public function expenseByMonth($y, $m)
     {
         
         $term = "$m-$y";
@@ -51,22 +43,23 @@ public function incomeByMonth($y, $m)
 
 }
 
+
     public function getIncome($id)
     {
-        $receita = Income::where('id', $id)->first();
+        $despesa = Expense::where('id', $id)->first();
 
-       return $receita;
+       return $despesa;
     }
 
     public function delete($id)
     {
-        $receita = Income::find($id);
-        return $receita->delete();
+        $despesa = Expense::find($id);
+        return $despesa->delete();
     }
 
     public function update($id, Request $request)
     {
-        $receita = Income::where('id', $id)->first();
+        $despesa = Expense::where('id', $id)->first();
 
         
         $amount = $request->only('amount'); //Por que retorna um array??
@@ -76,12 +69,12 @@ public function incomeByMonth($y, $m)
         $description = $description['description'];
 
 
-        $receita->description = $description;
-        $receita->amount = $amount;
+        $despesa->description = $description;
+        $despesa->amount = $amount;
 
         //como validar aqui tambem?
 
-        return($receita->save());
+        return($despesa->save());
         
 
 
@@ -91,7 +84,7 @@ public function incomeByMonth($y, $m)
     public function create(Request $request)
     {
         $dadoExistente = null;
-        $dadoExistente = Income::where('description', $request->description)->first();
+        $dadoExistente = Expense::where('description', $request->description)->first();
     
         if ($dadoExistente != Null){
 
@@ -102,14 +95,13 @@ public function incomeByMonth($y, $m)
                 }
         }
 
-        $receita = new Income($request->all());
+        $despesa = new Expense($request->all());
         
-        $receita->date = Carbon::now()
+        $despesa->date = Carbon::now()
             ->isoFormat('DD-MM-YYYY');
 
     
-        return Income::create($receita->toArray());
-       // return Income::create($receita);
-        
+        return Expense::create($despesa->toArray());
+       // return Expense::create($despesa);
     } 
 }
